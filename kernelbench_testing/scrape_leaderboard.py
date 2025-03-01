@@ -5,6 +5,8 @@ import json
 import time
 import re
 import logging
+import argparse
+import sys
 
 # Configure logging
 logging.basicConfig(
@@ -23,6 +25,13 @@ os.makedirs('kernelbench_testing/qa_pairs/solutions', exist_ok=True)
 
 # URL of the leaderboard
 url = 'https://scalingintelligence.stanford.edu/KernelBenchLeaderboard/'
+
+# Parse command-line arguments
+parser = argparse.ArgumentParser(description='Scrape KernelBench leaderboard for Q&A pairs')
+parser.add_argument('--all', action='store_true', help='Extract all available problems')
+parser.add_argument('--level', type=int, choices=[1, 2, 3, 4], help='Extract problems from a specific level')
+parser.add_argument('--limit', type=int, help='Limit the number of problems to extract')
+args = parser.parse_args()
 
 def fetch_url_content(url, retries=3, delay=1):
     """Fetch content from URL with retries."""
@@ -122,7 +131,9 @@ def extract_links_from_html(html_content):
 def get_hardcoded_problem_solution_pairs():
     """Get hardcoded problem-solution pairs from JavaScript extraction."""
     # This data was extracted using JavaScript in the browser
+    # Only including pairs with valid solution URLs
     return [
+        # Level 1 problems
         {
             "problem_text": "Level 1: 1_Square_matrix_multiplication_",
             "problem_url": "https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p1.py",
@@ -193,6 +204,8 @@ def get_hardcoded_problem_solution_pairs():
             "speedup": "0.20",
             "model": "claude-3.5-sonnet"
         },
+        
+        # Level 2 problems
         {
             "problem_text": "Level 2: 7_Conv3d_ReLU_LeakyReLU_GELU_Sigmoid_BiasAdd",
             "problem_url": "https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l2_p7.py",
@@ -221,6 +234,8 @@ def get_hardcoded_problem_solution_pairs():
             "speedup": "2.02",
             "model": "claude-3.5-sonnet"
         },
+        
+        # Level 3 problems
         {
             "problem_text": "Level 3: 4_LeNet5",
             "problem_url": "https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l3_p4.py",
@@ -228,7 +243,6 @@ def get_hardcoded_problem_solution_pairs():
             "speedup": "1.32",
             "model": "claude-3.5-sonnet"
         }
-        # Added a selection of problems from different levels with high speedups
     ]
 
 def create_qa_pairs(problem_solution_pairs):
@@ -382,8 +396,27 @@ def main():
         problem_solution_pairs = extract_links_from_html(html_content)
         logging.info(f"Found {len(problem_solution_pairs)} problem-solution pairs")
         
+        # Filter problem-solution pairs based on command-line arguments
+        filtered_pairs = problem_solution_pairs
+        
+        # Filter by level if specified
+        if args.level:
+            filtered_pairs = [pair for pair in filtered_pairs if f"Level {args.level}:" in pair["problem_text"]]
+            logging.info(f"Filtered to {len(filtered_pairs)} pairs from Level {args.level}")
+        
+        # Limit the number of pairs if specified
+        if args.limit and not args.all:
+            filtered_pairs = filtered_pairs[:args.limit]
+            logging.info(f"Limited to {len(filtered_pairs)} pairs")
+        
+        # If --all is not specified and no other filters are applied, use a default limit
+        if not args.all and not args.level and not args.limit:
+            # Default to 15 pairs if no arguments are provided
+            filtered_pairs = filtered_pairs[:15]
+            logging.info(f"Using default limit of 15 pairs. Use --all to extract all problems.")
+        
         # Create Q&A pairs
-        qa_pairs = create_qa_pairs(problem_solution_pairs)
+        qa_pairs = create_qa_pairs(filtered_pairs)
         logging.info(f"Created {len(qa_pairs)} Q&A pairs")
         
         # Save Q&A pairs
