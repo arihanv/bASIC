@@ -1,5 +1,7 @@
 import torch
 import numpy as np
+import matplotlib.pyplot as plt
+import networkx as nx
 
 class Tree:
     def __init__(self, nodes=10, device=None, threshold=0.5, max_depth=10):
@@ -29,6 +31,47 @@ class Tree:
         self.rows = torch.arange(self.nodes, device=self.device)  # Row indices
         self.position_id = torch.zeros((self.nodes), dtype=torch.long, device=self.device)  # Position IDs
         self.kv_cache_mask = torch.zeros((self.nodes, self.nodes), device=self.device)  # KV cache mask
+        
+        # For tracking tree structure
+        self.node_count = 1  # Root node is always present
+        self.leaf_nodes = [0]  # Start with root as the only leaf
+        self.token_ids = [0] * nodes  # Token IDs for each node
+        self.token_probs = [0.0] * nodes  # Probabilities for each node
+        self.children = [[] for _ in range(nodes)]  # Child node indices for each node
+        self.parent = [0] * nodes  # Parent node index for each node
+        self.node_tokens = [""] * nodes  # Actual token strings for visualization
+    
+    def add_node(self, parent_idx, token_id, prob):
+        """
+        Add a new node to the tree.
+        
+        Args:
+            parent_idx (int): Index of the parent node.
+            token_id (int): Token ID for the new node.
+            prob (float): Probability of the token.
+            
+        Returns:
+            int: Index of the new node.
+        """
+        if self.node_count >= self.nodes:
+            return -1  # Tree is full
+        
+        node_idx = self.node_count
+        self.node_count += 1
+        
+        # Update tree structure
+        self.weight[parent_idx, node_idx] = 1
+        self.parent[node_idx] = parent_idx
+        self.children[parent_idx].append(node_idx)
+        self.token_ids[node_idx] = token_id
+        self.token_probs[node_idx] = prob
+        
+        # Update leaf nodes
+        if parent_idx in self.leaf_nodes:
+            self.leaf_nodes.remove(parent_idx)
+        self.leaf_nodes.append(node_idx)
+        
+        return node_idx
     
     def initialize(self, logits):
         """
@@ -185,3 +228,103 @@ class Tree:
         self.input_ids_matrix.zero_()
         self.parents_matrix.zero_()
         self.kv_cache_mask.zero_()
+        
+        # Reset tracking structures
+        self.node_count = 1  # Root node is always present
+        self.leaf_nodes = [0]  # Start with root as the only leaf
+        self.token_ids = [0] * self.nodes  # Token IDs for each node
+        self.token_probs = [0.0] * self.nodes  # Probabilities for each node
+        self.children = [[] for _ in range(self.nodes)]  # Child node indices for each node
+        self.parent = [0] * self.nodes  # Parent node index for each node
+        self.node_tokens = [""] * self.nodes  # Actual token strings for visualization
+    
+    def set_node_token(self, node_idx, token_str):
+        """
+        Set the token string for a node (for visualization).
+        
+        Args:
+            node_idx (int): Index of the node.
+            token_str (str): Token string.
+        """
+        if 0 <= node_idx < self.nodes:
+            self.node_tokens[node_idx] = token_str
+    
+    def visualize(self, output_path=None):
+        """
+        Visualize the tree structure and attention mask.
+        
+        Args:
+            output_path (str, optional): Path to save the visualization. If None, display the plot.
+            
+        Returns:
+            matplotlib.figure.Figure: The figure object.
+        """
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+        
+        # Create a directed graph
+        G = nx.DiGraph()
+        
+        # Add nodes
+        for i in range(self.node_count):
+            G.add_node(i, label=self.node_tokens[i] if self.node_tokens[i] else f"Node {i}")
+        
+        # Add edges
+        for i in range(1, self.node_count):
+            G.add_edge(self.parent[i], i)
+        
+        # Draw the tree
+        pos = nx.drawing.nx_agraph.graphviz_layout(G, prog="dot")
+        labels = {node: G.nodes[node]["label"] for node in G.nodes()}
+        
+        nx.draw(G, pos, ax=ax1, with_labels=True, labels=labels, 
+                node_color="lightgreen", node_size=2000, 
+                font_size=10, font_weight="bold", 
+                edge_color="brown", width=2, arrows=True)
+        
+        ax1.set_title("(a) Draft tree")
+        
+        # Draw the attention mask
+        if self.node_count > 1:
+            # Create attention mask for visualization
+            tokens = [self.node_tokens[i] for i in range(self.node_count) if self.node_tokens[i]]
+            if not tokens:
+                tokens = [f"Node {i}" for i in range(self.node_count)]
+            
+            mask = np.zeros((len(tokens), len(tokens)))
+            
+            # Set mask values based on tree structure
+            for i in range(len(tokens)):
+                for j in range(i + 1):
+                    # Check if j is in the path to i
+                    node_i = i
+                    path = [node_i]
+                    while node_i > 0:
+                        node_i = self.parent[node_i]
+                        path.append(node_i)
+                    
+                    if j in path:
+                        mask[i, j] = 1
+            
+            # Plot the mask
+            im = ax2.imshow(mask, cmap="Greens", aspect="equal")
+            
+            # Set ticks and labels
+            ax2.set_xticks(np.arange(len(tokens)))
+            ax2.set_yticks(np.arange(len(tokens)))
+            ax2.set_xticklabels(tokens)
+            ax2.set_yticklabels(tokens)
+            
+            # Rotate the x labels for better readability
+            plt.setp(ax2.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+            
+            ax2.set_title("(b) Tree attention mask")
+        
+        plt.tight_layout()
+        
+        if output_path:
+            plt.savefig(output_path)
+            plt.close(fig)
+        else:
+            plt.show()
+        
+        return fig

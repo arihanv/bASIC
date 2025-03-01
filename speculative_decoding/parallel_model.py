@@ -67,10 +67,17 @@ class ParallelSPModel(SPModel):
                 node_idx = start_node + i if start_node + i < end_node else end_node - 1
                 if i == 0:
                     # Add first token as child of root
-                    tree.add_node(0, token_id, 1.0)
+                    added_node_idx = tree.add_node(0, token_id, 1.0)
+                    # Set token string for visualization
+                    if added_node_idx >= 0:
+                        tree.set_node_token(added_node_idx, self._detokenize([token_id]))
                 else:
                     # Add subsequent tokens as children of previous tokens
-                    tree.add_node(node_idx - 1, token_id, 1.0)
+                    parent_idx = node_idx - 1
+                    added_node_idx = tree.add_node(parent_idx, token_id, 1.0)
+                    # Set token string for visualization
+                    if added_node_idx >= 0:
+                        tree.set_node_token(added_node_idx, self._detokenize([token_id]))
         
         return tree
     

@@ -102,10 +102,17 @@ class SPModel:
         for i, token_id in enumerate(token_ids[:max_tokens]):
             if i == 0:
                 # Add first token as child of root
-                tree.add_node(0, token_id, 1.0)
+                node_idx = tree.add_node(0, token_id, 1.0)
+                # Set token string for visualization
+                if node_idx >= 0:
+                    tree.set_node_token(node_idx, self._detokenize([token_id]))
             else:
                 # Add subsequent tokens as children of previous tokens
-                tree.add_node(i, token_id, 1.0)
+                parent_idx = i
+                node_idx = tree.add_node(parent_idx, token_id, 1.0)
+                # Set token string for visualization
+                if node_idx >= 0:
+                    tree.set_node_token(node_idx, self._detokenize([token_id]))
         
         return tree
     

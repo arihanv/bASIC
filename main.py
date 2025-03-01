@@ -113,6 +113,22 @@ def generate_with_streaming_speculative_decoding(prompt, max_tokens=20, use_para
         ):
             print(chunk, end="", flush=True)
 
+def visualize_tree_example():
+    """
+    Create and visualize an example tree structure.
+    """
+    from speculative_decoding.visualization import create_example_tree, visualize_tree
+    
+    # Create example tree
+    tree = create_example_tree()
+    
+    # Visualize tree and save to file
+    visualize_tree(tree, output_path="tree_visualization.png")
+    
+    print("Tree visualization saved to tree_visualization.png")
+    
+    return tree
+
 if __name__ == "__main__":
     prompt = "What is the capital of France?"
     
@@ -128,3 +144,6 @@ if __name__ == "__main__":
     print("Generating with streaming speculative tree decoding:")
     generate_with_streaming_speculative_decoding(prompt)
     print("\n")
+    
+    print("Visualizing example tree structure:")
+    visualize_tree_example()
