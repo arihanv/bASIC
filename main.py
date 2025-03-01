@@ -1,7 +1,7 @@
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api--openai-vllm--dbh9m5jlzc5l.code.run/v1",
+    base_url="https://api--openai-vllm--d8zwcx9rqzwl.code.run/v1",
     api_key="EMPTY"
 )
 
