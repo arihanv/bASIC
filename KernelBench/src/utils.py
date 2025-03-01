@@ -121,10 +121,8 @@ def query_server(
             model = "default"
         case "deepseek":
             client = OpenAI(
-                api_key=DEEPSEEK_KEY,
-                base_url="https://api.deepseek.com",
-                timeout=10000000,
-                max_retries=3,
+                base_url="https://api--openai-vllm--d8zwcx9rqzwl.code.run/v1",
+                api_key="EMPTY",
             )
             model = model_name
             assert model in ["deepseek-chat", "deepseek-coder", "deepseek-reasoner"], "Only support deepseek-chat or deepseek-coder for now"
@@ -224,7 +222,7 @@ def query_server(
         if model in ["deepseek-chat", "deepseek-coder"]:
             # regular deepseek model 
             response = client.chat.completions.create(
-                    model=model,
+                    model="deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
                     messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": prompt},
@@ -392,6 +390,13 @@ SERVER_PRESETS = {
         "model_name": "Meta-Llama-3.1-405B-Instruct",
         "temperature": 0.1,
         "max_tokens": 8192,
+    },
+    "openai": {
+        "model_name": "gpt-4",
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "top_p": 1.0,
+        "top_k": 1,
     },
 }
 
