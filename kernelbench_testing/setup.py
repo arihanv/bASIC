@@ -10,6 +10,11 @@ setup(
         "openai>=1.12.0",
         "torch>=2.2.0",
         "numpy>=1.24.0",
+        "cuda-python>=12.0",  # For CUDA profiling
+        "nvtx>=0.2.5",       # For NVIDIA Tools Extension
+        "pandas>=2.0.0",     # For data processing
+        "matplotlib>=3.7.0", # For visualization
+        "requests>=2.31.0",  # For API calls
     ],
     python_requires=">=3.8",
     author="Ryan Rong",

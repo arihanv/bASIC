@@ -95,6 +95,7 @@ Only output the code, no explanations needed."""
         )
     
     print(f"Generating CUDA kernel using {'Claude' if args.use_claude else 'custom'} inference...")
+    print(prompt)
     response = inference_server(prompt)
     
     # Print the full response for debugging
