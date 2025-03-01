@@ -1,5 +1,9 @@
-from custom_inference import create_custom_inference_server
+from inference_utils import create_custom_inference_server, create_claude_inference_server
 import re
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def extract_code_block(text):
     """
@@ -22,6 +26,14 @@ def extract_code_block(text):
     return text
 
 def main():
+    # Parse command line arguments for inference type
+    import argparse
+    parser = argparse.ArgumentParser(description='Generate CUDA kernel code using LLM')
+    parser.add_argument('--use-claude', action='store_true', help='Use Claude API instead of custom inference')
+    parser.add_argument('--verbose', action='store_true', help='Print verbose output')
+    parser.add_argument('--time-generation', action='store_true', help='Time the generation process')
+    args = parser.parse_args()
+
     # Define a simple matrix multiplication problem
     problem = '''
 import torch
@@ -56,86 +68,33 @@ def get_init_inputs():
 '''
     
     # Create a prompt for the model
-    prompt = f"""You write custom CUDA kernels to replace the pytorch operators in the given architecture to get speedups.
+    prompt = f"""Given this PyTorch model that performs matrix multiplication:
 
-You have complete freedom to choose the set of operators you want to replace. You may make the decision to replace some operators with custom CUDA kernels and leave others unchanged. You may replace multiple operators with custom implementations, consider operator fusion opportunities (combining multiple operators into a single kernel, for example, combining matmul+relu), or algorithmic changes (such as online softmax). You are only limited by your imagination.
-
-Here's an example to show you the syntax of inline embedding custom CUDA operators in torch: The example given architecture is:
-
-```
-import torch
-import torch.nn as nn
-
-class Model(nn.Module):
-    def __init__(self):
-        super(Model, self).__init__()
-    
-    def forward(self, x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
-        return x + y
-```
-
-The example new arch with custom CUDA kernels looks like this:
-```
-import torch
-import torch.nn as nn
-from torch.utils.cpp_extension import load
-import os
-
-# Define the CUDA kernel
-cuda_source = '''
-extern "C" __global__ void add_kernel(float* x, float* y, float* out, int n) {{
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < n) {{
-        out[idx] = x[idx] + y[idx];
-    }}
-}}
-'''
-
-# Compile the CUDA kernel
-module_path = os.path.dirname(os.path.abspath(__file__))
-add_op = load(name="add_op",
-              sources=[],
-              extra_cuda_cflags=[],
-              extra_cflags=[],
-              verbose=True)
-
-class ModelNew(nn.Module):
-    def __init__(self):
-        super(ModelNew, self).__init__()
-    
-    def forward(self, x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
-        # Get tensor dimensions
-        n = x.numel()
-        
-        # Allocate output tensor
-        out = torch.empty_like(x)
-        
-        # Launch CUDA kernel
-        threads_per_block = 1024
-        blocks_per_grid = (n + threads_per_block - 1) // threads_per_block
-        
-        add_op.add_kernel(
-            blocks_per_grid, threads_per_block,
-            x.contiguous().data_ptr(), y.contiguous().data_ptr(),
-            out.data_ptr(), n
-        )
-        
-        return out
-```
-
-You are given the following architecture:
-
-```
+```python
 {problem}
 ```
 
-Optimize the architecture named Model with custom CUDA kernels! Name your optimized output architecture ModelNew. Output the new code in codeblocks. Please generate real code, NOT pseudocode, make sure the code compiles and is fully functional. Just output the new model code, no other text, and NO testing code!
-"""
+Create a new version of this model called ModelNew that uses a custom CUDA kernel for matrix multiplication. The custom implementation should:
+1. Use a tiled matrix multiplication approach
+2. Include proper CUDA kernel code
+3. Handle the matrix dimensions N=2048
+4. Be compilable and functional
+
+Only output the code, no explanations needed."""
     
-    print("Creating custom inference server...")
-    inference_server = create_custom_inference_server(verbose=True, time_generation=True)
+    print("Creating inference server...")
+    if args.use_claude:
+        inference_server = create_claude_inference_server(
+            verbose=args.verbose,
+            time_generation=args.time_generation
+        )
+    else:
+        inference_server = create_custom_inference_server(
+            verbose=args.verbose,
+            time_generation=args.time_generation
+        )
     
-    print("Generating CUDA kernel...")
+    print(f"Generating CUDA kernel using {'Claude' if args.use_claude else 'custom'} inference...")
     response = inference_server(prompt)
     
     # Print the full response for debugging
