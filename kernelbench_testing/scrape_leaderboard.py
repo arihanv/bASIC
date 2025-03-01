@@ -7,6 +7,13 @@ import re
 import logging
 import argparse
 import sys
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Configure logging
 logging.basicConfig(
@@ -48,6 +55,106 @@ def fetch_url_content(url, retries=3, delay=1):
                 logging.error(f"Failed to fetch {url} after {retries} attempts")
                 raise
     return None
+
+def extract_links_with_selenium(url):
+    """Extract problem-solution pairs using Selenium for dynamic content."""
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    
+    logging.info("Starting Chrome in headless mode to scrape the leaderboard...")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    
+    try:
+        driver.get(url)
+        # Wait for the table to load
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "table"))
+        )
+        
+        # Give the page a moment to fully render
+        time.sleep(2)
+        
+        # Get the page source after JavaScript has executed
+        html_content = driver.page_source
+        
+        # Parse with BeautifulSoup
+        soup = BeautifulSoup(html_content, 'html.parser')
+        
+        # Find all table rows
+        table = soup.find('table')
+        if not table:
+            logging.warning("Could not find table in the leaderboard page even with Selenium.")
+            return []
+            
+        rows = table.find_all('tr')[1:]  # Skip header row
+        
+        problem_solution_pairs = []
+        
+        # Process each row
+        for i, row in enumerate(rows, 1):
+            # Get all cells in the row
+            cells = row.find_all('td')
+            
+            if len(cells) < 2:
+                continue  # Skip rows with insufficient cells
+            
+            # Extract problem info from the first cell
+            problem_cell = cells[0]
+            problem_text = problem_cell.text.strip()
+            
+            # Extract rank 1 solution from the second cell
+            rank1_cell = cells[1]
+            rank1_link = rank1_cell.find('a')
+            
+            if not rank1_link:
+                logging.warning(f"No rank 1 link found for problem: {problem_text}")
+                continue
+            
+            # Extract the href attribute (URL to the solution)
+            solution_url = rank1_link.get('href')
+            if not solution_url:
+                logging.warning(f"No solution URL found for problem: {problem_text}")
+                continue
+            
+            # Extract speedup value
+            speedup_match = re.search(r'(\d+\.\d+)', rank1_cell.text.strip())
+            speedup_text = speedup_match.group(1) if speedup_match else "N/A"
+            
+            # Extract model name
+            model_text = rank1_cell.text.strip()
+            model_match = re.search(r'\((.*?)\)', model_text)
+            model_name = model_match.group(1) if model_match else "N/A"
+            
+            # Construct problem URL based on problem text
+            # Example: "Level 1: 1_Square_matrix_multiplication_" -> "l1_p1.py"
+            level_match = re.search(r'Level (\d+)', problem_text)
+            problem_num_match = re.search(r'(\d+)_', problem_text)
+            
+            if level_match and problem_num_match:
+                level = level_match.group(1)
+                problem_num = problem_num_match.group(1)
+                problem_url = f"https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l{level}_p{problem_num}.py"
+                
+                logging.info(f"Found problem: {problem_text}")
+                logging.info(f"  Problem URL: {problem_url}")
+                logging.info(f"  Solution URL: {solution_url}")
+                logging.info(f"  Speedup: {speedup_text}")
+                logging.info(f"  Model: {model_name}")
+                
+                problem_solution_pairs.append({
+                    "problem_text": problem_text,
+                    "problem_url": problem_url,
+                    "solution_url": solution_url,
+                    "speedup": speedup_text,
+                    "model": model_name
+                })
+        
+        return problem_solution_pairs
+    
+    finally:
+        driver.quit()
 
 def extract_links_from_html(html_content):
     """Extract problem and rank 1 solution links from HTML content."""
@@ -389,11 +496,18 @@ def main():
     logging.info(f"Starting KernelBench leaderboard scraping from {url}")
     
     try:
-        # Fetch the leaderboard HTML
-        html_content = fetch_url_content(url)
+        # Determine whether to use Selenium or regular requests
+        if args.all:
+            logging.info("Using Selenium to extract all available problems from the leaderboard")
+            problem_solution_pairs = extract_links_with_selenium(url)
+        else:
+            # Fetch the leaderboard HTML using regular requests
+            logging.info(f"Fetching leaderboard from {url}")
+            html_content = fetch_url_content(url)
+            
+            # Extract problem and solution links
+            problem_solution_pairs = extract_links_from_html(html_content)
         
-        # Extract problem and solution links
-        problem_solution_pairs = extract_links_from_html(html_content)
         logging.info(f"Found {len(problem_solution_pairs)} problem-solution pairs")
         
         # Filter problem-solution pairs based on command-line arguments
