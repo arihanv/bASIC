@@ -1,5 +1,12 @@
-# Use a lightweight Python image
-FROM python:3.10-slim
+# Use NVIDIA CUDA image as base
+FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
+
+# Install Python and required packages
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
