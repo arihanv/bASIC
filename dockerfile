@@ -20,6 +20,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application code
 COPY . .
 
+# Install KernelBench in development mode
+WORKDIR /app/KernelBench
+RUN pip install -e .
+
+# Return to app directory
+WORKDIR /app
+
 # Expose the port
 EXPOSE 8000
 
