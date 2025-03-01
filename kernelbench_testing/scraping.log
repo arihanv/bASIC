@@ -1,0 +1,128 @@
+2025-03-01 18:40:54,873 - INFO - Starting KernelBench leaderboard scraping from https://scalingintelligence.stanford.edu/KernelBenchLeaderboard/
+2025-03-01 18:40:54,902 - INFO - Found 0 problem-solution pairs
+2025-03-01 18:40:54,902 - INFO - Created 0 Q&A pairs
+2025-03-01 18:40:54,902 - INFO - Saved 0 Q&A pairs to kernelbench_testing/qa_pairs/kernelbench_qa_pairs.json
+2025-03-01 18:40:54,903 - INFO - Created markdown file with Q&A pairs: kernelbench_testing/qa_pairs/kernelbench_qa_pairs.md
+2025-03-01 18:40:54,903 - INFO - Created CSV file with Q&A pairs: kernelbench_testing/qa_pairs/kernelbench_qa_pairs.csv
+2025-03-01 18:40:54,903 - INFO - Created README file for the qa_pairs directory: kernelbench_testing/qa_pairs/README.md
+2025-03-01 18:40:54,903 - INFO - Scraping completed successfully
+2025-03-01 18:41:57,256 - INFO - Starting KernelBench leaderboard scraping from https://scalingintelligence.stanford.edu/KernelBenchLeaderboard/
+2025-03-01 18:41:57,283 - WARNING - No problem-solution pairs found using BeautifulSoup. Using hardcoded data from JavaScript extraction.
+2025-03-01 18:41:57,284 - INFO - Using 5 hardcoded problem-solution pairs
+2025-03-01 18:41:57,284 - INFO - Found 5 problem-solution pairs
+2025-03-01 18:41:57,284 - INFO - Processing [1/5] Level 1: 1_Square_matrix_multiplication_
+2025-03-01 18:41:57,284 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p1.py
+2025-03-01 18:41:57,284 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/fa3e10d50ee22fd656c8e4767b3f5157.py
+2025-03-01 18:41:57,721 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__1_Square_matrix_multiplication_.py
+2025-03-01 18:41:57,721 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__1_Square_matrix_multiplication__solution.py
+2025-03-01 18:41:58,221 - INFO - Processing [2/5] Level 1: 2_Standard_matrix_multiplication_
+2025-03-01 18:41:58,221 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p2.py
+2025-03-01 18:41:58,221 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/d5e8b955452b19c73a2acc9f8372d306.py
+2025-03-01 18:41:58,706 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__2_Standard_matrix_multiplication_.py
+2025-03-01 18:41:58,706 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__2_Standard_matrix_multiplication__solution.py
+2025-03-01 18:41:59,206 - INFO - Processing [3/5] Level 1: 3_Batched_matrix_multiplication
+2025-03-01 18:41:59,206 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p3.py
+2025-03-01 18:41:59,207 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/d0c502aa627e20a3de8e80dbdc8d2ef0.py
+2025-03-01 18:41:59,690 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__3_Batched_matrix_multiplication.py
+2025-03-01 18:41:59,690 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__3_Batched_matrix_multiplication_solution.py
+2025-03-01 18:42:00,190 - INFO - Processing [4/5] Level 1: 4_Matrix_vector_multiplication_
+2025-03-01 18:42:00,191 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p4.py
+2025-03-01 18:42:00,191 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/ace75607eb636186cc05385c61d181c8.py
+2025-03-01 18:42:00,663 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__4_Matrix_vector_multiplication_.py
+2025-03-01 18:42:00,663 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__4_Matrix_vector_multiplication__solution.py
+2025-03-01 18:42:01,164 - INFO - Processing [5/5] Level 1: 5_Matrix_scalar_multiplication
+2025-03-01 18:42:01,164 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p5.py
+2025-03-01 18:42:01,164 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/5a8524b63a79d7dfb2085a8f82597b96.py
+2025-03-01 18:42:01,623 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__5_Matrix_scalar_multiplication.py
+2025-03-01 18:42:01,623 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__5_Matrix_scalar_multiplication_solution.py
+2025-03-01 18:42:02,124 - INFO - Created 5 Q&A pairs
+2025-03-01 18:42:02,124 - INFO - Saved 5 Q&A pairs to kernelbench_testing/qa_pairs/kernelbench_qa_pairs.json
+2025-03-01 18:42:02,125 - INFO - Created markdown file with Q&A pairs: kernelbench_testing/qa_pairs/kernelbench_qa_pairs.md
+2025-03-01 18:42:02,125 - INFO - Created CSV file with Q&A pairs: kernelbench_testing/qa_pairs/kernelbench_qa_pairs.csv
+2025-03-01 18:42:02,125 - INFO - Created README file for the qa_pairs directory: kernelbench_testing/qa_pairs/README.md
+2025-03-01 18:42:02,125 - INFO - Scraping completed successfully
+2025-03-01 18:43:04,327 - INFO - Starting KernelBench leaderboard scraping from https://scalingintelligence.stanford.edu/KernelBenchLeaderboard/
+2025-03-01 18:43:04,430 - WARNING - No problem-solution pairs found using BeautifulSoup. Using hardcoded data from JavaScript extraction.
+2025-03-01 18:43:04,430 - INFO - Using 15 hardcoded problem-solution pairs
+2025-03-01 18:43:04,430 - INFO - Found 15 problem-solution pairs
+2025-03-01 18:43:04,430 - INFO - Processing [1/15] Level 1: 1_Square_matrix_multiplication_
+2025-03-01 18:43:04,430 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p1.py
+2025-03-01 18:43:04,430 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/fa3e10d50ee22fd656c8e4767b3f5157.py
+2025-03-01 18:43:04,492 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__1_Square_matrix_multiplication_.py
+2025-03-01 18:43:04,492 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__1_Square_matrix_multiplication__solution.py
+2025-03-01 18:43:04,992 - INFO - Processing [2/15] Level 1: 2_Standard_matrix_multiplication_
+2025-03-01 18:43:04,992 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p2.py
+2025-03-01 18:43:04,992 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/d5e8b955452b19c73a2acc9f8372d306.py
+2025-03-01 18:43:05,057 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__2_Standard_matrix_multiplication_.py
+2025-03-01 18:43:05,058 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__2_Standard_matrix_multiplication__solution.py
+2025-03-01 18:43:05,558 - INFO - Processing [3/15] Level 1: 3_Batched_matrix_multiplication
+2025-03-01 18:43:05,558 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p3.py
+2025-03-01 18:43:05,558 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/d0c502aa627e20a3de8e80dbdc8d2ef0.py
+2025-03-01 18:43:05,620 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__3_Batched_matrix_multiplication.py
+2025-03-01 18:43:05,620 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__3_Batched_matrix_multiplication_solution.py
+2025-03-01 18:43:06,120 - INFO - Processing [4/15] Level 1: 4_Matrix_vector_multiplication_
+2025-03-01 18:43:06,120 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p4.py
+2025-03-01 18:43:06,120 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/ace75607eb636186cc05385c61d181c8.py
+2025-03-01 18:43:06,181 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__4_Matrix_vector_multiplication_.py
+2025-03-01 18:43:06,181 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__4_Matrix_vector_multiplication__solution.py
+2025-03-01 18:43:06,681 - INFO - Processing [5/15] Level 1: 5_Matrix_scalar_multiplication
+2025-03-01 18:43:06,681 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p5.py
+2025-03-01 18:43:06,681 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/5a8524b63a79d7dfb2085a8f82597b96.py
+2025-03-01 18:43:06,742 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__5_Matrix_scalar_multiplication.py
+2025-03-01 18:43:06,742 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__5_Matrix_scalar_multiplication_solution.py
+2025-03-01 18:43:07,242 - INFO - Processing [6/15] Level 1: 6_Matmul_with_large_K_dimension_
+2025-03-01 18:43:07,242 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p6.py
+2025-03-01 18:43:07,242 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/5a11f55d9e36f2b68b5774c540201de9.py
+2025-03-01 18:43:07,732 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__6_Matmul_with_large_K_dimension_.py
+2025-03-01 18:43:07,732 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__6_Matmul_with_large_K_dimension__solution.py
+2025-03-01 18:43:08,232 - INFO - Processing [7/15] Level 1: 7_Matmul_with_small_K_dimension_
+2025-03-01 18:43:08,232 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p7.py
+2025-03-01 18:43:08,232 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/1143f5a65506760015e6c3f06a283f87.py
+2025-03-01 18:43:08,711 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__7_Matmul_with_small_K_dimension_.py
+2025-03-01 18:43:08,711 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__7_Matmul_with_small_K_dimension__solution.py
+2025-03-01 18:43:09,211 - INFO - Processing [8/15] Level 1: 8_Matmul_with_irregular_shapes_
+2025-03-01 18:43:09,211 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p8.py
+2025-03-01 18:43:09,211 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/175f44b0ad194769197ecf985280ba71.py
+2025-03-01 18:43:09,692 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__8_Matmul_with_irregular_shapes_.py
+2025-03-01 18:43:09,692 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__8_Matmul_with_irregular_shapes__solution.py
+2025-03-01 18:43:10,192 - INFO - Processing [9/15] Level 1: 9_Tall_skinny_matrix_multiplication_
+2025-03-01 18:43:10,192 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p9.py
+2025-03-01 18:43:10,192 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/bfe7cc072b506a9a376bb0b68acdf936.py
+2025-03-01 18:43:10,652 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__9_Tall_skinny_matrix_multiplication_.py
+2025-03-01 18:43:10,652 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__9_Tall_skinny_matrix_multiplication__solution.py
+2025-03-01 18:43:11,152 - INFO - Processing [10/15] Level 1: 10_3D_tensor_matrix_multiplication
+2025-03-01 18:43:11,153 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l1_p10.py
+2025-03-01 18:43:11,153 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/8f8e6d114217c821c325b7d98d924fde.py
+2025-03-01 18:43:11,652 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_1__10_3D_tensor_matrix_multiplication.py
+2025-03-01 18:43:11,653 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_1__10_3D_tensor_matrix_multiplication_solution.py
+2025-03-01 18:43:12,153 - INFO - Processing [11/15] Level 2: 7_Conv3d_ReLU_LeakyReLU_GELU_Sigmoid_BiasAdd
+2025-03-01 18:43:12,153 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l2_p7.py
+2025-03-01 18:43:12,153 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/d0d792daeb6fcee0a4d0e1b163978c0f.py
+2025-03-01 18:43:12,637 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_2__7_Conv3d_ReLU_LeakyReLU_GELU_Sigmoid_BiasAdd.py
+2025-03-01 18:43:12,637 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_2__7_Conv3d_ReLU_LeakyReLU_GELU_Sigmoid_BiasAdd_solution.py
+2025-03-01 18:43:13,137 - INFO - Processing [12/15] Level 2: 14_Gemm_Divide_Sum_Scaling
+2025-03-01 18:43:13,137 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l2_p14.py
+2025-03-01 18:43:13,137 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/3b400dd6bfedc298e2d95b1b95b73c6f.py
+2025-03-01 18:43:13,616 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_2__14_Gemm_Divide_Sum_Scaling.py
+2025-03-01 18:43:13,616 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_2__14_Gemm_Divide_Sum_Scaling_solution.py
+2025-03-01 18:43:14,116 - INFO - Processing [13/15] Level 2: 20_ConvTranspose3d_Sum_ResidualAdd_Multiply_ResidualAdd
+2025-03-01 18:43:14,116 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l2_p20.py
+2025-03-01 18:43:14,116 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/ecce74df42226c991c533ae3ede3de06.py
+2025-03-01 18:43:14,558 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_2__20_ConvTranspose3d_Sum_ResidualAdd_Multiply_ResidualAdd.py
+2025-03-01 18:43:14,559 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_2__20_ConvTranspose3d_Sum_ResidualAdd_Multiply_ResidualAdd_solution.py
+2025-03-01 18:43:15,059 - INFO - Processing [14/15] Level 2: 90_Conv3d_LeakyReLU_Sum_Clamp_GELU
+2025-03-01 18:43:15,059 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l2_p90.py
+2025-03-01 18:43:15,059 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/447fac3129139e84230be00b8e0372d7.py
+2025-03-01 18:43:15,506 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_2__90_Conv3d_LeakyReLU_Sum_Clamp_GELU.py
+2025-03-01 18:43:15,506 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_2__90_Conv3d_LeakyReLU_Sum_Clamp_GELU_solution.py
+2025-03-01 18:43:16,006 - INFO - Processing [15/15] Level 3: 4_LeNet5
+2025-03-01 18:43:16,006 - INFO -   Problem URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/problems/l3_p4.py
+2025-03-01 18:43:16,006 - INFO -   Solution URL: https://raw.githubusercontent.com/ScalingIntelligence/KernelBenchLeaderboard/refs/heads/main/docs//assets/solutions/4f80ebb0657e05543d17fb5db74842ed.py
+2025-03-01 18:43:16,454 - INFO -   Saved problem to kernelbench_testing/qa_pairs/problems/Level_3__4_LeNet5.py
+2025-03-01 18:43:16,454 - INFO -   Saved solution to kernelbench_testing/qa_pairs/solutions/Level_3__4_LeNet5_solution.py
+2025-03-01 18:43:16,954 - INFO - Created 15 Q&A pairs
+2025-03-01 18:43:16,955 - INFO - Saved 15 Q&A pairs to kernelbench_testing/qa_pairs/kernelbench_qa_pairs.json
+2025-03-01 18:43:16,955 - INFO - Created markdown file with Q&A pairs: kernelbench_testing/qa_pairs/kernelbench_qa_pairs.md
+2025-03-01 18:43:16,955 - INFO - Created CSV file with Q&A pairs: kernelbench_testing/qa_pairs/kernelbench_qa_pairs.csv
+2025-03-01 18:43:16,956 - INFO - Created README file for the qa_pairs directory: kernelbench_testing/qa_pairs/README.md
+2025-03-01 18:43:16,956 - INFO - Scraping completed successfully
