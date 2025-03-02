@@ -8,6 +8,11 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Install NVIDIA Nsight Compute
+RUN apt-get update && apt-get install -y \
+    cuda-nsight-compute-12-2 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /app
 
