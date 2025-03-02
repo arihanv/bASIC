@@ -1,0 +1,9 @@
+Generated text: Okay, so I'm trying to figure out what "arihan" means. I've never heard that word before, and I'm not sure if
+
+Speculative model used: deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+Target model used: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+Generation time: 1.06 seconds
+Number of tokens: 109
+
+Note: This visualization simulates the speculative decoding tree.
+The actual tree used by the API isn't directly accessible.

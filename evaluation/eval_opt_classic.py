@@ -15,6 +15,10 @@ from opt_classic.model import SPModel
 from opt_classic.kv_cache import initialize_past_key_values
 from opt_classic.utils import *
 
+from fastchat.model import get_conversation_template
+import torch
+import openai as OpenAI
+
 
 def spforward(input_ids, model, tokenizer, args, logits_processor=None, max_steps=512):
     assert input_ids.shape[0] == 1, "Only support batch size 1 for now!!"

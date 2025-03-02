@@ -3,7 +3,7 @@ from fastchat.model import get_conversation_template
 import torch
 
 model = SPModel.from_pretrained(
-    base_model_path="meta-llama/Llama-2-7b-chat-hf",
+    base_model_path="deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
     draft_model_path="JackFram/llama-68m",
     torch_dtype=torch.float16,
     low_cpu_mem_usage=True,
@@ -25,7 +25,7 @@ if use_llama_2_chat:
 
 
 input_ids=model.tokenizer([prompt]).input_ids
-input_ids = torch.as_tensor(input_ids).cuda()
+input_ids = torch.as_tensor(input_ids)
 output_ids=model.spgenerate(input_ids,temperature=0,max_new_tokens=1024,nodes=50,threshold=0.7,max_depth=10)
 output=model.tokenizer.decode(output_ids[0])
 
