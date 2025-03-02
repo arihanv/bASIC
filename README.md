@@ -4,7 +4,7 @@ bASIC is a high-performance framework that leverages tree speculative decoding t
 
 ## 🌟 Features
 
-- **Tree Speculative Decoding**: Advanced decoding strategy for faster and more accurate kernel generation
+- **[Tree Speculative Decoding](https://github.com/arihanv/bASIC/tree/tree-speculative-decoding)**: Advanced decoding strategy for faster and more accurate kernel generation
 - **Custom Endpoint Integration**: Flexible architecture supporting various LLM backends
 - **KernelBench Performance**: State-of-the-art results on the KernelBench benchmark suite
 - **CUDA Optimization**: Specialized in generating highly optimized CUDA kernels
