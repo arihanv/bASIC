@@ -1,17 +1,18 @@
-from openai import OpenAI
+from inference_utils import create_custom_inference_server
 
-client = OpenAI(
-    base_url="https://api--openai-vllm--d8zwcx9rqzwl.code.run/v1",
-    api_key="EMPTY"
-)
+def main():
+    # Create the custom inference server with verbose output
+    server = create_custom_inference_server(verbose=True)
+    
+    # Test with a simple prompt
+    prompt = "What is the capital of France?"
+    print(f"Testing with prompt: {prompt}")
+    
+    # Get response from the server
+    response = server(prompt)
+    
+    # Print the full response
+    print("\nFull response:", response)
 
-completion = client.chat.completions.create(
-  model="deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
-  stream=True,
-  messages=[
-    {"role": "user", "content": "What is the capital of France?"}
-  ]
-)
-
-for chunk in completion:
-    print(chunk.choices[0].delta.content, end="", flush=True)
+if __name__ == "__main__":
+    main()
