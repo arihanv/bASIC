@@ -1,4 +1,4 @@
-from inference_utils import create_custom_inference_server
+from custom_inference import create_custom_inference_server
 
 def main():
     # Create the custom inference server with verbose output

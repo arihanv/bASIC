@@ -37,7 +37,6 @@ pip install -r requirements.txt
 
 ```
 bASIC/
-├── main.py                 # Entry point for kernel generation
 ├── test_inference.py       # Inference testing with custom endpoints
 ├── inference_utils.py      # Tree speculative decoding implementation
 ├── KernelBench/           # Benchmark suite (gitignored)
@@ -52,7 +51,7 @@ bASIC/
 
 Run the main script with your desired configuration:
 ```bash
-python main.py
+python test
 ```
 
 ### Working with KernelBench Problems
