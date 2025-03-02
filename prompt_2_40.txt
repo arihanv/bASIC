@@ -1,0 +1,130 @@
+Create an optimized CUDA kernel implementation that:
+1. Maximizes performance
+2. Uses efficient memory access patterns
+3. Properly handles all edge cases
+4. Is compilable and functional
+
+For this pytorch function (Only output the code, no explanations needed):
+
+def __init__(self, in_features, out_features, scaling_factor):
+        super(Model, self).__init__()
+        self.matmul = nn.Linear(in_features, out_features)
+        self.scaling_factor = scaling_factor
+
+    def forward(self, x):
+        """
+        Forward pass of the model.
+
+        Args:
+            x (torch.Tensor): Input tensor of shape (batch_size, in_features).
+
+        Returns:
+            torch.Tensor: Output tensor of shape (batch_size, out_features).
+        """
+        x = self.matmul(x)
+        original_x = x.clone().detach()
+        x = x * self.scaling_factor
+        x = x + original_x
+        return x
+
+C code begins:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <cuda_runtime.h>
+#include <math.h>
+
+__global__ void scaled_residual_add_kernel(const float* y_linear, const float* y_linear_detached, float* output, int size, float scaling_factor) {
+    // implement this
+}
+
+// usage:
+int main() {
+    // Define matrix dimensions
+    const int N = 1024;  // Number of rows
+    const int M = 1024;  // Number of columns
+    size_t diag_bytes = N * sizeof(float);
+    size_t mat_bytes = N * M * sizeof(float);
+
+    // Allocate host memory
+    float *h_diag = (float*)malloc(diag_bytes);
+    float *h_mat = (float*)malloc(mat_bytes);
+    float *h_out = (float*)malloc(mat_bytes);
+
+    // Initialize diagonal vector and matrix
+    // For demonstration: diag = [2.0, 2.0, ..., 2.0], mat = [1.0, 1.0, ..., 1.0]
+    // Expected result: each element should be 2.0 * 1.0 = 2.0
+    for (int i = 0; i < N; ++i) {
+        h_diag[i] = 2.0f;
+        for (int j = 0; j < M; ++j) {
+            h_mat[i * M + j] = 1.0f;
+        }
+    }
+
+    // Allocate device memory
+    float *d_diag, *d_mat, *d_out;
+    cudaMalloc(&d_diag, diag_bytes);
+    cudaMalloc(&d_mat, mat_bytes);
+    cudaMalloc(&d_out, mat_bytes);
+
+    // Copy data from host to device
+    cudaMemcpy(d_diag, h_diag, diag_bytes, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_mat, h_mat, mat_bytes, cudaMemcpyHostToDevice);
+
+    // Define block and grid dimensions
+    dim3 threads(16, 16);
+    dim3 blocks((M + threads.x - 1) / threads.x,
+                (N + threads.y - 1) / threads.y);
+
+    // Create CUDA events for timing
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+
+    // Record start time
+    cudaEventRecord(start);
+
+    // Launch the kernel
+    diag_matmul_kernel<<<blocks, threads>>>(d_diag, d_mat, d_out, N, M);
+
+    // Record stop time
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+
+    // Calculate elapsed time
+    float milliseconds = 0;
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("Kernel execution time: %f ms\n", milliseconds);
+
+    // Copy result back to host
+    cudaMemcpy(h_out, d_out, mat_bytes, cudaMemcpyDeviceToHost);
+
+    // Verify the result
+    bool error = false;
+    for (int i = 0; i < N * M; ++i) {
+        if (fabs(h_out[i] - 2.0f) > 1e-5) {
+            error = true;
+            printf("Error at index %d: Expected 2.0, got %f\n", i, h_out[i]);
+            break;
+        }
+    }
+
+    if (error)
+        printf("Error: Diagonal matrix multiplication result is incorrect.\n");
+    else
+        printf("Success: Diagonal matrix multiplication result is correct.\n");
+
+    // Clean up
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
+    
+    cudaFree(d_diag);
+    cudaFree(d_mat);
+    cudaFree(d_out);
+
+    free(h_diag);
+    free(h_mat);
+    free(h_out);
+
+    return 0;
+}
