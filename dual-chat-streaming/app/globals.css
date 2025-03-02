@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 142 72% 29%;
+    --card: 0 0% 0%;
+    --card-foreground: 142 72% 29%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 142 72% 29%;
+    --primary: 142 72% 29%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 142 72% 10%;
+    --secondary-foreground: 142 72% 29%;
+    --muted: 142 72% 10%;
+    --muted-foreground: 142 72% 20%;
+    --accent: 142 72% 10%;
+    --accent-foreground: 142 72% 29%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 142 72% 29%;
+    --border: 142 72% 10%;
+    --input: 142 72% 10%;
+    --ring: 142 72% 29%;
+    --radius: 0rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-mono;
+  }
+}
+
+/* Terminal-style blinking cursor */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink::after {
+  content: "_";
+  animation: blink 1s step-end infinite;
+}
+
+/* Custom scrollbar for terminal theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a4726;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a603a;
+}
+
+/* Terminal selection color */
+::selection {
+  background: rgba(76, 175, 80, 0.3);
+  color: #4ade80;
+}
+
+/* Glowing text effect */
+@keyframes glow {
+  0%,
+  100% {
+    text-shadow: 0 0 5px #4ade80, 0 0 10px #4ade80;
+  }
+  50% {
+    text-shadow: 0 0 20px #4ade80, 0 0 30px #4ade80;
+  }
+}
+
+.glow-text {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Matrix-like background animation */
+@keyframes matrix {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+.matrix-bg {
+  background-image: linear-gradient(
+    0deg,
+    rgba(0, 255, 0, 0.05) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(0, 255, 0, 0.05) 50%,
+    rgba(0, 255, 0, 0.05) 75%,
+    transparent 75%,
+    transparent 100%
+  );
+  background-size: 4px 4px;
+  animation: matrix 30s linear infinite;
+}
+
