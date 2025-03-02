@@ -34,6 +34,7 @@ async def compile_and_profile_cuda(cuda_code: str, request_id: str):
     with tempfile.TemporaryDirectory() as temp_dir:
         cuda_file_path = os.path.join(temp_dir, f"kernel_{request_id}.cu")
         executable_path = os.path.join(temp_dir, f"kernel_{request_id}")
+        profiling_output_path = os.path.join(temp_dir, f"profile_{request_id}.ncu-rep")
         
         # Write CUDA code to file
         with open(cuda_file_path, "w") as f:
@@ -76,29 +77,72 @@ async def compile_and_profile_cuda(cuda_code: str, request_id: str):
             jobs[request_id]["logs"].append({"timestamp": time.time(), "message": "Execution test successful", "type": "info"})
             jobs[request_id]["logs"].append({"timestamp": time.time(), "message": f"Output: {test_process.stdout}", "type": "output"})
             
-            # Run profiling with nvprof
+            # Run profiling with Nsight Compute (ncu)
+            jobs[request_id]["logs"].append({"timestamp": time.time(), "message": "Starting profiling with NVIDIA Nsight Compute", "type": "info"})
+            
+            # First run ncu with summarized metrics output to text
             profiling_process = subprocess.run(
-                ["nvprof", "--metrics", "all", executable_path],
+                ["ncu", "--metrics", "sm__cycles_elapsed.avg,sm__cycles_elapsed.avg.per_second,dram__bytes_read.sum,dram__bytes_write.sum,sm__warps_launched.sum", 
+                 "--csv", "--page=raw", executable_path],
                 capture_output=True,
                 text=True,
                 check=False
             )
             
             # Parse profiling output
-            profiling_data = profiling_process.stdout + profiling_process.stderr
+            profiling_data = profiling_process.stdout
+            if profiling_process.stderr:
+                jobs[request_id]["logs"].append({"timestamp": time.time(), "message": f"Profiling stderr: {profiling_process.stderr}", "type": "info"})
+            
             jobs[request_id]["logs"].append({"timestamp": time.time(), "message": "Profiling completed", "type": "info"})
             jobs[request_id]["logs"].append({"timestamp": time.time(), "message": profiling_data, "type": "profiling"})
             
-            # Extract key metrics (this is a simplified example)
-            # In a real implementation, you'd parse the nvprof output more carefully
+            # Also run ncu with report output for more detailed analysis
+            detailed_profiling_process = subprocess.run(
+                ["ncu", "--set", "full", "--export", profiling_output_path, executable_path],
+                capture_output=True,
+                text=True,
+                check=False
+            )
+            
+            if detailed_profiling_process.returncode == 0:
+                jobs[request_id]["logs"].append({"timestamp": time.time(), "message": "Detailed profiling report generated", "type": "info"})
+            else:
+                jobs[request_id]["logs"].append({"timestamp": time.time(), "message": f"Detailed profiling failed: {detailed_profiling_process.stderr}", "type": "warning"})
+            
+            # Extract key metrics from CSV output
             metrics = {}
-            for line in profiling_data.split('\n'):
-                if "GPU activities" in line:
-                    metrics["execution_time"] = line.strip()
-                if "Invocations" in line:
-                    metrics["invocations"] = line.strip()
-                if "SM Efficiency" in line:
-                    metrics["sm_efficiency"] = line.strip()
+            lines = profiling_data.split('\n')
+            
+            # Find header and data lines in CSV output
+            header_line = None
+            data_line = None
+            
+            for i, line in enumerate(lines):
+                if line.startswith("\"ID\"") or line.startswith("ID,"):
+                    header_line = i
+                    if i+1 < len(lines) and lines[i+1].strip():
+                        data_line = i+1
+                        break
+            
+            if header_line is not None and data_line is not None:
+                headers = [h.strip('"').strip() for h in lines[header_line].split(',')]
+                values = [v.strip('"').strip() for v in lines[data_line].split(',')]
+                
+                # Combine headers and values
+                for i, header in enumerate(headers):
+                    if i < len(values) and values[i]:
+                        metrics[header] = values[i]
+            
+            # Add some useful metrics if they're available
+            if "sm__cycles_elapsed.avg" in metrics:
+                metrics["cycles_elapsed"] = metrics["sm__cycles_elapsed.avg"]
+            if "dram__bytes_read.sum" in metrics:
+                metrics["memory_read_bytes"] = metrics["dram__bytes_read.sum"]
+            if "dram__bytes_write.sum" in metrics:
+                metrics["memory_write_bytes"] = metrics["dram__bytes_write.sum"]
+            if "sm__warps_launched.sum" in metrics:
+                metrics["warps_launched"] = metrics["sm__warps_launched.sum"]
             
             jobs[request_id]["metrics"] = metrics
             jobs[request_id]["status"] = "completed"
